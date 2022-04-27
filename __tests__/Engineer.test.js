@@ -4,6 +4,7 @@ test('creates a engineer object', () => {
     const engineer = new Engineer('Mark');
     engineer.gitHub = "melliott7264";
 
+    expect(engineer.name).toBe("Mark");
     expect(engineer.gitHub).toEqual("melliott7264");
 });
 
@@ -18,5 +19,5 @@ test('returns the engineer GitHub username', () => {
 test('returns the employee role: Engineer', () => {
     const engineer = new Engineer('Mark');
     
-    expect(engineer.getRole()).toHaveProperty('Engineer');
+    expect(engineer.getRole()).toBe('Engineer');
 });

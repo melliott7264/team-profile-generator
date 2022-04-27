@@ -17,5 +17,5 @@ test('returns the intern school', () => {
 test('returns the employee role: Intern', () => {
     const intern = new Intern('Mark');
     
-    expect(engineer.getRole()).toHaveProperty('Intern');
+    expect(intern.getRole()).toBe('Intern');
 });

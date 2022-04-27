@@ -30,8 +30,8 @@ test(' returns the employee e-mail address', () => {
     expect(employee.getEmail()).toEqual("markelliottva@gmail.com");
 });
 
-test('returns the emplyee role: Employee', () => {
+test('returns the employee role: Employee', () => {
     const employee = new Employee('Mark');
     
-    expect(employee.getRole()).toHaveProperty('Employee');
+    expect(employee.getRole()).toBe('Employee');
 });
