@@ -1,0 +1,14 @@
+.shadow {
+    box-shadow: 3px;
+}
+header {
+    height: 150px;
+}
+
+.card-body {
+    width: 350px;
+}
+
+.employee-data {
+    width: 260px;
+}
