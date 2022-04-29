@@ -1,9 +1,7 @@
 const Employee = require('../lib/Employee');
 
 test('creates a employee object', () => {
-    const employee = new Employee('Mark');
-    employee.id = 5;
-    employee.email = "markelliottva@gmail.com";
+    const employee = new Employee('Mark', 5, 'markelliottva@gmail.com');
 
     expect(employee.name).toBe('Mark');
     expect(employee.id).toEqual(5);

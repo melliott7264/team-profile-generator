@@ -1,10 +1,11 @@
 const Manager = require('../lib/Manager');
 
 test('creates a Manager object', () => {
-    const manager = new Manager('Mark');
-    manager.officeNumber = 10;
+    const manager = new Manager('Mark', 101, 'markelliottva@gmail.com', 10);
 
     expect(manager.name).toBe("Mark");
+    expect(manager.id).toEqual(101);
+    expect(manager.email).toBe("markelliottva@gmail.com");
     expect(manager.officeNumber).toEqual(10);
 });
 

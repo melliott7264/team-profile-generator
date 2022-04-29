@@ -1,9 +1,11 @@
 const Intern = require('../lib/Intern');
 
 test('creates a intern object', () => {
-    const intern = new Intern('Mark');
-    intern.school = "University of Richmond";
+    const intern = new Intern('Mark', 101, 'markelliottva@gmail.com', "University of Richmond");
 
+    expect(intern.name).toBe("Mark");
+    expect(intern.id).toEqual(101);
+    expect(intern.email).toBe("markelliottva@gmail.com");
     expect(intern.school).toEqual("University of Richmond");
 });
 
