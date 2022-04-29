@@ -305,7 +305,7 @@ function buildPage() {
                     <div class="body-container p-4 bg-secondary">
                         <p class="employee-data employee-id bg-white p-1">ID: <span>${engineer.getId()}</span></p>
                         <p class="employee-data employee-email bg-white p-1">E-mail:  <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></p>
-                        <p class="employee-data emplyee-info bg-white p-1" >GitHub:  <a href"https://github.com/${engineer.getGitHub()}">${engineer.getGitHub()}</a></p>
+                        <p class="employee-data emplyee-info bg-white p-1" >GitHub:  <a href="https://github.com/${engineer.getGitHub()}">${engineer.getGitHub()}</a></p>
                     </div>
                 </div>
             </div>   
@@ -344,7 +344,7 @@ function buildPage() {
     .then(readFileData => {
         footerHtml = readFileData;
         console.log("This is the footer html  " + footerHtml);
-        indexHtml = headerHtml.concat("",JSON.stringify(cardsArray.join(""))).concat("",footerHtml);
+        indexHtml = headerHtml.concat("",cardsArray.join("").toString()).concat("",footerHtml);
         console.log("This is the full html file  " + indexHtml);
         return writeFile(indexHtml);
     })
