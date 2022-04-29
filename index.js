@@ -69,7 +69,7 @@ function  getManagerInput() {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "id",
             message: "Please enter your Manager's employee ID.",
             validate: idInput => {
@@ -77,9 +77,9 @@ function  getManagerInput() {
                     return true;
                 } else {
                     console.log("Please enter a number for your Manager's employee ID!");
-                    return false;
+                    return false      
                 }
-            }
+            }     
         },
         {
             type: "input",
@@ -95,7 +95,7 @@ function  getManagerInput() {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "office",
             message: "Please enter your Manager's office number.",
             validate: officeInput => {
@@ -111,10 +111,6 @@ function  getManagerInput() {
     ])
     .then((inputDataArray) => {
         const manager = new Manager (inputDataArray.name, inputDataArray.id, inputDataArray.email, inputDataArray.office);
-
-        // manager.id = inputDataArray.id;
-        // manager.email = inputDataArray.email;
-        // manager.officeNumber = inputDataArray.office;
 
         teamArray.push(manager);
 
@@ -138,7 +134,7 @@ function  getManagerInput() {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "id",
             message: "Please enter your Engineer's employee ID.",
             validate: idInput => {
@@ -181,10 +177,6 @@ function  getManagerInput() {
     .then((inputDataArray) => {
         const engineer = new Engineer (inputDataArray.name, inputDataArray.id, inputDataArray.email, inputDataArray.gitHub);
 
-        // engineer.id = inputDataArray.id;
-        // engineer.email = inputDataArray.email;
-        // engineer.gitHub = inputDataArray.gitHub;
-
         teamArray.push(engineer);
 
         checkForMoreInput();
@@ -210,7 +202,7 @@ function  getInternInput () {
             }
         },
         {
-            type: "number",
+            type: "input",
             name: "id",
             message: "Please enter your Intern's employee ID.",
             validate: idInput => {
@@ -221,6 +213,7 @@ function  getInternInput () {
                     return false;
                 }
             }
+
         },
         {
             type: "input",
@@ -277,7 +270,7 @@ function buildPage() {
             const manager = new Manager (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].officeNumber);
             console.log(manager.role, manager.getName(), manager.getEmail(), manager.getId(), manager.getOfficeNumber());
             managerCard = `
-            <div class="card col mt-4">
+            <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
                     <div class="card-header bg-primary">
                         <h2 class="employee-title text-white">Manager</h4>
@@ -296,7 +289,7 @@ function buildPage() {
             const engineer = new Engineer (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].gitHub);
             console.log(engineer.role, engineer.getName(), engineer.getEmail(), engineer.getId(), engineer.getGitHub());
             engineerCard =  `
-            <div class="card col mt-4">
+            <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
                     <div class="card-header bg-primary">
                         <h2 class="employee-title text-white">Engineer</h4>
@@ -315,7 +308,7 @@ function buildPage() {
             const intern = new Intern (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].school);
             console.log(intern.role, intern.getName(), intern.getEmail(), intern.getId(), intern.getSchool());
             internCard =  `
-            <div class="card col mt-4">
+            <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
                     <div class="card-header bg-primary">
                         <h2 class="employee-title text-white">Intern</h4>
@@ -330,25 +323,18 @@ function buildPage() {
             </div>   
                 `;
             cardsArray.push(internCard);
-
-        }
-            
+        }   
     }
-
     readFile('./src/header.html')
     .then(readFileData => {
         headerHtml = readFileData;
-        console.log (headerHtml);
         return readFile('./src/footer.html');
     })
     .then(readFileData => {
         footerHtml = readFileData;
-        console.log("This is the footer html  " + footerHtml);
         indexHtml = headerHtml.concat("",cardsArray.join("").toString()).concat("",footerHtml);
-        console.log("This is the full html file  " + indexHtml);
         return writeFile(indexHtml);
     })
-
     .then (writeFileResponse => {
         console.log(writeFileResponse);
         return copyFile();
@@ -359,7 +345,6 @@ function buildPage() {
     .catch(err => {
         console.log(err);
     });
-    
     
 };
 
