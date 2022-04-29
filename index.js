@@ -4,6 +4,8 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+const {readFile, writeFile, copyFile} = require('./lib/files');
+
 const teamArray = [];
 
 function  getEmployeeInput() {
@@ -262,22 +264,105 @@ function  getInternInput () {
 
     };
 function buildPage() {
+    var cardsArray = [];
+    var managerCard= "";
+    var engineerCard= "";
+    var internCard= "";
+    var headerHtml = "";
+    var footerHtml = "";
+    var indexHtml = "";
+
     for (i=0; i < teamArray.length; i++) {
         if (teamArray[i].role === 'Manager'){
             const manager = new Manager (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].officeNumber);
             console.log(manager.role, manager.getName(), manager.getEmail(), manager.getId(), manager.getOfficeNumber());
+            managerCard = `
+            <div class="card col mt-4">
+                <div class="card-body">
+                    <div class="card-header bg-primary">
+                        <h2 class="employee-title text-white">Manager</h4>
+                        <h3 class="employee-name text-white">${manager.getName()}</h5>
+                    </div>
+                    <div class="body-container p-4 bg-secondary">
+                        <p class="employee-data employee-id bg-white p-1">ID: <span>${manager.getId()}</span></p>
+                        <p class="employee-data employee-email bg-white p-1">E-mail:  <a href="mailto:${manager.getEmail()}">${manager.getEmail()}</a></p>
+                        <p class="employee-data emplyee-info bg-white p-1" >Office:  ${manager.getOfficeNumber()}</p>
+                    </div>
+                </div>
+            </div>   
+                `;
+            cardsArray.push(managerCard);
         } else if (teamArray[i].role === 'Engineer'){
-            const engineer = new Engineer (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].gitHUb);
+            const engineer = new Engineer (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].gitHub);
             console.log(engineer.role, engineer.getName(), engineer.getEmail(), engineer.getId(), engineer.getGitHub());
+            engineerCard =  `
+            <div class="card col mt-4">
+                <div class="card-body">
+                    <div class="card-header bg-primary">
+                        <h2 class="employee-title text-white">Engineer</h4>
+                        <h3 class="employee-name text-white">${engineer.getName()}</h5>
+                    </div>
+                    <div class="body-container p-4 bg-secondary">
+                        <p class="employee-data employee-id bg-white p-1">ID: <span>${engineer.getId()}</span></p>
+                        <p class="employee-data employee-email bg-white p-1">E-mail:  <a href="mailto:${engineer.getEmail()}">${engineer.getEmail()}</a></p>
+                        <p class="employee-data emplyee-info bg-white p-1" >GitHub:  <a href"https://github.com/${engineer.getGitHub()}">${engineer.getGitHub()}</a></p>
+                    </div>
+                </div>
+            </div>   
+                `;
+            cardsArray.push(engineerCard);
         } else {
             const intern = new Intern (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].school);
             console.log(intern.role, intern.getName(), intern.getEmail(), intern.getId(), intern.getSchool());
+            internCard =  `
+            <div class="card col mt-4">
+                <div class="card-body">
+                    <div class="card-header bg-primary">
+                        <h2 class="employee-title text-white">Intern</h4>
+                        <h3 class="employee-name text-white">${intern.getName()}</h5>
+                    </div>
+                    <div class="body-container p-4 bg-secondary">
+                        <p class="employee-data employee-id bg-white p-1">ID: <span>${intern.getId()}</span></p>
+                        <p class="employee-data employee-email bg-white p-1">E-mail:  <a href="mailto:${intern.getEmail()}">${intern.getEmail()}</a></p>
+                        <p class="employee-data emplyee-info bg-white p-1" >School:  ${intern.getSchool()}</a></p>
+                    </div>
+                </div>
+            </div>   
+                `;
+            cardsArray.push(internCard);
+
         }
             
     }
+
+    readFile('./src/header.html')
+    .then(readFileData => {
+        headerHtml = readFileData;
+        console.log (headerHtml);
+        return readFile('./src/footer.html');
+    })
+    .then(readFileData => {
+        footerHtml = readFileData;
+        console.log("This is the footer html  " + footerHtml);
+        indexHtml = headerHtml.concat("",JSON.stringify(cardsArray.join(""))).concat("",footerHtml);
+        console.log("This is the full html file  " + indexHtml);
+        return writeFile(indexHtml);
+    })
+
+    .then (writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .then (copyFileResponse => {
+        console.log(copyFileResponse);
+    })
+    .catch(err => {
+        console.log(err);
+    });
     
     
 };
+
 
 function init() {
     getEmployeeInput()   
