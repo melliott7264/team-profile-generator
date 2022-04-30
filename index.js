@@ -246,10 +246,6 @@ function  getInternInput () {
     .then((inputDataArray) => {
         const intern = new Intern (inputDataArray.name, inputDataArray.id,inputDataArray.email, inputDataArray.school);
 
-    //    intern.id = inputDataArray.id;
-    //    intern.email = inputDataArray.email;
-    //    intern.school = inputDataArray.school;
-
        teamArray.push(intern);
 
        checkForMoreInput();
@@ -268,7 +264,6 @@ function buildPage() {
     for (i=0; i < teamArray.length; i++) {
         if (teamArray[i].role === 'Manager'){
             const manager = new Manager (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].officeNumber);
-            console.log(manager.role, manager.getName(), manager.getEmail(), manager.getId(), manager.getOfficeNumber());
             managerCard = `
             <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
@@ -287,7 +282,6 @@ function buildPage() {
             cardsArray.push(managerCard);
         } else if (teamArray[i].role === 'Engineer'){
             const engineer = new Engineer (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].gitHub);
-            console.log(engineer.role, engineer.getName(), engineer.getEmail(), engineer.getId(), engineer.getGitHub());
             engineerCard =  `
             <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
@@ -306,7 +300,6 @@ function buildPage() {
             cardsArray.push(engineerCard);
         } else {
             const intern = new Intern (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].school);
-            console.log(intern.role, intern.getName(), intern.getEmail(), intern.getId(), intern.getSchool());
             internCard =  `
             <div class="card col-12 col-md-6 col-xl-4 mt-4">
                 <div class="card-body">
