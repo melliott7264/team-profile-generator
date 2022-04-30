@@ -1,16 +1,22 @@
+// load inquirer for question prompts 
 const inquirer = require('inquirer');
 
+// attach script files for employee child classes
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+// attach script file for file system functions
 const {readFile, writeFile, copyFile} = require('./lib/files');
 
+// this array holds the html strings for the employee cards 
 const teamArray = [];
 
+// this function determines the type of employee for which you are entering data; Manager, Engineer, or Intern
 function  getEmployeeInput() {
     console.log("Please answer the following questions about each of your team members:")
     
+    // prompt for the employee type
     inquirer
     .prompt(
         {
@@ -20,6 +26,7 @@ function  getEmployeeInput() {
             choices: ["Manager", "Engineer", "Intern"]
             }
     )
+    // then direct program execution to the appropriate function for each employee type/role
     .then(({role}) => {
         switch (role) {
             case "Manager":
@@ -35,14 +42,17 @@ function  getEmployeeInput() {
     });
 };
 
+// this function checks to see if the user wants to add another employee to the team
 function checkForMoreInput() {
     inquirer
+    // a confirmation (Y/N) prompt as to whether to enter another employee
     .prompt({
         type: "confirm",
         name: "moreEmployees",
         message: "Do you have any more team members to enter?",
         default:  false
     })
+    // if Yes, then start the data entry process all over again at getEmployeeInput,  else goto the function to build the html page.
     .then(({moreEmployees}) => {
         if (moreEmployees) {
             getEmployeeInput();
@@ -52,6 +62,7 @@ function checkForMoreInput() {
     });
 };
 
+// this function gets the input for the Manager role
 function  getManagerInput() {
     inquirer
     .prompt([
@@ -69,9 +80,12 @@ function  getManagerInput() {
             }
         },
         {
+            // should have used type:number here but I ran into validation problems.   It seems to be a bug in inquirer.
             type: "input",
             name: "id",
             message: "Please enter your Manager's employee ID.",
+            // even using type:input all attempts to check for NaN results in "NaN" being displayed at the input prompt and it cannot be deleted.
+            // hence, a very limited validation function.
             validate: idInput => {
                 if (idInput) {
                     return true;
@@ -95,6 +109,7 @@ function  getManagerInput() {
             }
         },
         {
+            // see comment above about use of type:number
             type: "input",
             name: "office",
             message: "Please enter your Manager's office number.",
@@ -109,15 +124,19 @@ function  getManagerInput() {
 
         }
     ])
+    // getting data array from prompts and passing the data to the Manager class for an object creation, then push the object onto the team array.
     .then((inputDataArray) => {
         const manager = new Manager (inputDataArray.name, inputDataArray.id, inputDataArray.email, inputDataArray.office);
 
         teamArray.push(manager);
 
+        // check to see if another employee is to be entered
         checkForMoreInput();
     });
     };
-  function  getEngineerInput() {
+
+// function to get input for the engineer role.
+function  getEngineerInput() {
     inquirer
     .prompt([
         {
@@ -134,6 +153,7 @@ function  getManagerInput() {
             }
         },
         {
+            // see note in getManagerInput about type:number and why type:input was used here.
             type: "input",
             name: "id",
             message: "Please enter your Engineer's employee ID.",
@@ -174,6 +194,7 @@ function  getManagerInput() {
 
         }
     ])
+    // getting data array from prompts and passing the data to the Engineer class for an object creation, then push the object onto the team array.
     .then((inputDataArray) => {
         const engineer = new Engineer (inputDataArray.name, inputDataArray.id, inputDataArray.email, inputDataArray.gitHub);
 
@@ -202,6 +223,7 @@ function  getInternInput () {
             }
         },
         {
+            // see note in getManagerInput about type:number and why type:input was used here.
             type: "input",
             name: "id",
             message: "Please enter your Intern's employee ID.",
@@ -243,6 +265,7 @@ function  getInternInput () {
 
         }
     ])
+    // getting data array from prompts and passing the data to the Intern class for an object creation, then push the object onto the team array.
     .then((inputDataArray) => {
         const intern = new Intern (inputDataArray.name, inputDataArray.id,inputDataArray.email, inputDataArray.school);
 
@@ -252,15 +275,26 @@ function  getInternInput () {
     });
 
     };
+
+// the function to build the html page from strings loaded from template files and strings of template literals.
 function buildPage() {
+    // holds the strings for each employee card
     var cardsArray = [];
+
+    // variables to temporarily hold the strings from template literals for each card
     var managerCard= "";
     var engineerCard= "";
     var internCard= "";
+
+    // variables to hold the beginning and ending strings of the index.html file loaded from template files
     var headerHtml = "";
     var footerHtml = "";
+
+    // the string variable containing the entire index.html page.
     var indexHtml = "";
 
+
+    //  this for loop loads ups the cardsArray with strings for each employee card type.
     for (i=0; i < teamArray.length; i++) {
         if (teamArray[i].role === 'Manager'){
             const manager = new Manager (teamArray[i].name, teamArray[i].id, teamArray[i].email, teamArray[i].officeNumber);
@@ -318,32 +352,42 @@ function buildPage() {
             cardsArray.push(internCard);
         }   
     }
+    // this reads in the beginning text for the index.html file
     readFile('./src/header.html')
     .then(readFileData => {
         headerHtml = readFileData;
+        // this reads in the ending text for the index.html file
         return readFile('./src/footer.html');
     })
     .then(readFileData => {
         footerHtml = readFileData;
+        // assembling the header(includes a bit of <main>), footer(includes a bit of <main>), and employee card strings into one web page.
+        // it was important to use a join and toString method here.  I tried JSON.stringify and if produced unwanted escape chars in the resulting string
         indexHtml = headerHtml.concat("",cardsArray.join("").toString()).concat("",footerHtml);
+        // creates a dist folder if it doesn't exist and writes the index.html file in it
         return writeFile(indexHtml);
     })
+    // processing any messages from the file write
     .then (writeFileResponse => {
         console.log(writeFileResponse);
+        // copying the style.css file to the dist folder
         return copyFile();
     })
+    // processing any messages from the file copy
     .then (copyFileResponse => {
         console.log(copyFileResponse);
     })
+    // processes any error messages from the writes or copy
     .catch(err => {
         console.log(err);
     });
     
 };
 
-
+// starts the ball rolling by calling getEmployeeInput for the first time
 function init() {
     getEmployeeInput()   
 };
 
+// calls the first function
 init();
