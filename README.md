@@ -21,9 +21,10 @@ This application may be downloaded from this GitHub repository: https://github.c
 
 After all the prerequisites have been installed above, type "node index" on the command line to run the program.  Make sure you are in the directory where the index.js file is located.  Follow all the prompts to provide all the information requested.  When presented with a choice of Manager, Engineer, or Intern roles, you will have to use the cursor keys to select the role you want and then press the Enter key to accept it.  Once all the information has been entered for a role, you will be asked if you want to enter the information for another team member.  Respond with a Y or an N.   The default is an N.  At the end,  an index.html file will be created in the ./dist folder and a style.css file will be copied in.
 
-A video demonstration of the application is given below.  Note:  This is a large file and may not be visable from within GitHub.  Play it outside of the readme for audio.
+A video demonstration of the application is given below.   Click on the link to view on YouTube.
 
-<video width="800" src="./teamProfileScreencast.mp4" type="video/mp4" controls></video>
+https://youtu.be/gW0P2Ggyeg0
+
 
 ## Credits
 
