@@ -6,6 +6,8 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+let managerFlag = false;
+
 // attach script file for file system functions
 const {readFile, writeFile, copyFile} = require('./lib/files');
 
@@ -64,6 +66,10 @@ function checkForMoreInput() {
 
 // this function gets the input for the Manager role
 function  getManagerInput() {
+    if (managerFlag) {
+        console.log("A Manager has already been defined for this team.  You must select antoher employee role.");
+        checkForMoreInput();
+    } else {
     inquirer
     .prompt([
         {
@@ -130,9 +136,13 @@ function  getManagerInput() {
 
         teamArray.push(manager);
 
+        // set manager flag indicating that a manager role has already been defined
+        managerFlag = true;
+
         // check to see if another employee is to be entered
         checkForMoreInput();
     });
+    }
     };
 
 // function to get input for the engineer role.
